@@ -20,13 +20,6 @@ import net.tecgurus.minipos.security.util.JwtTokenUtil;
 
 @RestController
 @CrossOrigin(origins = "*")
-/**
- * API POST /authenticate mediante JwtAuthenticationController. La API POST obtiene el nombre de usuario y la contraseña en el cuerpo. 
- * Usando Spring Authentication Manager, autenticamos el nombre de usuario y la contraseña. 
- * Si las credenciales son válidas, se crea un token JWT utilizando JWTTokenUtil y se le proporciona al cliente.
- * @author Dell E6530
- *
- */
 public class JwtAuthenticationController {
 	@Autowired
 	private AuthenticationManager authenticationManager;

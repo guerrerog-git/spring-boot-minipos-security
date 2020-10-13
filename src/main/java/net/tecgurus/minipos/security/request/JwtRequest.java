@@ -2,17 +2,11 @@ package net.tecgurus.minipos.security.request;
 
 import java.io.Serializable;
 
-/**
- * This class is required for storing the username and password we received from the client.
- * @author Dell E6530
- *
- */
 public class JwtRequest implements Serializable {
 	private static final long serialVersionUID = 5926468583005150707L;
 	private String username;
 	private String password;
 
-//need default constructor for JSON Parsing
 	public JwtRequest() {
 	}
 

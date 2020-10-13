@@ -21,12 +21,7 @@ import net.tecgurus.minipos.security.filter.JwtRequestFilter;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-/**
- * Esta clase amplía WebSecurityConfigurerAdapter. 
- * Esta es una clase de conveniencia que permite la personalización tanto de WebSecurity como de HttpSecurity.
- * @author Dell E6530
- *
- */
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -45,14 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/configuration/security",
             "/swagger-ui.html",
             "/webjars/**"
-            // other public endpoints of your API may be appended to this array
+            
     };
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-// configure AuthenticationManager so that it knows from where to load
-// user for matching credentials
-// Use BCryptPasswordEncoder
 		auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 
@@ -70,28 +62,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-// We don't need CSRF for this example
 		httpSecurity.csrf().disable()
-// dont authenticate this particular request
 				.authorizeRequests().antMatchers(AUTH_WHITELIST).permitAll()
-				.antMatchers("/compra/inventario").hasAuthority("ADMIN")
-
-				//antMatchers(AUTH_WHITELIST).permitAll().
-// all other requests need to be authenticated
 				.anyRequest().authenticated().and().
-// make sure we use stateless session; session won't be used to
-// store user's state.
 				exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-// Add a filter to validate the tokens with every request
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-//	
-	
-//	 @Override
-//	    protected void configure(HttpSecurity http) throws Exception{
-//	        http.
-//	        csrf().disable()
-//	        .authorizeRequests().antMatchers("/").permitAll();
-//	    }
+
 }
